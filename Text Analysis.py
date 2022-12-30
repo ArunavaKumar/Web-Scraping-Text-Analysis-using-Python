@@ -203,7 +203,7 @@ for keys , values in urlDict.items():
         firstLine = ""
         for word in lines:
             firstLine = firstLine + '' + word
-        if firstLine == "Page not found\n":
+        if firstLine == "Page not found - Blackcoffer Insights\n":
             posScoreList.append(np.nan)
             negScoreList.append(np.nan)
             polarityScoreList.append(np.nan)
