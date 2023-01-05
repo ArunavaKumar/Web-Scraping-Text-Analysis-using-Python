@@ -7,7 +7,6 @@ import requests
 import re
 
 import string
-import nltk
 from nltk.corpus import stopwords
 from nltk import word_tokenize
 from nltk.sentiment import SentimentIntensityAnalyzer
@@ -55,8 +54,8 @@ for keys , values in urlDict.items():
     paragraphs = soup.find_all('p')
     for paragraph in paragraphs:
         articleText = articleText + " " + str(paragraph)
-    cleanedArticleText = re.sub("\<strong>.*?\</strong>", "", articleText)
-    cleanedArticleText = re.sub("\<.*?\>", "", cleanedArticleText)    
+    cleanedArticleText = re.sub("\<strong>.*?\</strong>", "", articleText)  # remove headings from the article text
+    cleanedArticleText = re.sub("\<.*?\>", "", cleanedArticleText)  # remove tags from the article text
     
     articleFullText = articleTitle + "\n" + cleanedArticleText
     print ("Data collection is completed from {}th URL.".format(keys))
@@ -224,7 +223,7 @@ for keys , values in urlDict.items():
         initialWordList = []
         for line in articleFile:
             strLine = str(line)
-            lowerWords = strLine.lower()  #convert the article into lower case
+            lowerWords = strLine.lower()  # convert the article into lower case
             words = lowerWords.split()
             initialWordList.append(words)
     
@@ -251,7 +250,7 @@ for keys , values in urlDict.items():
     for word in wordList:
         articleCleanedText = articleCleanedText + " " + word
     finalWordList = []
-    for token in word_tokenize(articleCleanedText):  #tokenize the article
+    for token in word_tokenize(articleCleanedText):  # tokenize the article text
         finalWordList.append(token)
     
     # find extra words not present in positive and negative word lists.
@@ -302,7 +301,7 @@ for keys , values in urlDict.items():
         try:
             syllableCount = [len(list(y for y in x if y[-1].isdigit())) for x in d[word.lower()]][0]
         except KeyError:
-            syllableCount = syllapy.count(word)  #if word not found in cmudict
+            syllableCount = syllapy.count(word)  # if word not found in cmudict
         if syllableCount > 1:
             complexWordCount += 1
             syllableCountDict[word] = syllableCount
@@ -317,7 +316,7 @@ for keys , values in urlDict.items():
 
     # calculate word count after removing stopwords and punctuations using NLTK library.
     stop_words = set(stopwords.words('english'))
-    revisedCleanWords = [word for word in finalWordList if not word in stop_words]  #remove stopwords from article using NLTK package
+    revisedCleanWords = [word for word in finalWordList if not word in stop_words]  # remove stopwords from article using NLTK package
     revisedCleanWords = list(filter(lambda token: token not in string.punctuation, revisedCleanWords))
     revisedCleanWords = list(filter(lambda token: token != '’', revisedCleanWords))
     revisedCleanWords = list(filter(lambda token: token != '‘', revisedCleanWords))
